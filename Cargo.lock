@@ -165,19 +165,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "goto"
-version = "0.1.1"
-dependencies = [
- "anyhow",
- "atomicwrites",
- "clap",
- "fs2",
- "path-clean",
- "serde_json",
- "tempfile",
-]
-
-[[package]]
 name = "heck"
 version = "0.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -357,6 +344,19 @@ dependencies = [
  "once_cell",
  "rustix 1.1.4",
  "windows-sys 0.61.2",
+]
+
+[[package]]
+name = "tiny-goto"
+version = "0.1.1"
+dependencies = [
+ "anyhow",
+ "atomicwrites",
+ "clap",
+ "fs2",
+ "path-clean",
+ "serde_json",
+ "tempfile",
 ]
 
 [[package]]
