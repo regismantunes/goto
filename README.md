@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/regismantunes/goto/actions/workflows/ci.yml/badge.svg)](https://github.com/regismantunes/goto/actions/workflows/ci.yml)
 [![GitHub Release](https://img.shields.io/github/v/release/regismantunes/goto)](https://github.com/regismantunes/goto/releases/latest)
+[![GitHub Downloads](https://img.shields.io/github/downloads/regismantunes/goto/total)](https://github.com/regismantunes/goto/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/Rust-1.80%2B-orange?logo=rust)](https://www.rust-lang.org/)
 
