@@ -63,8 +63,8 @@ For a manually extracted archive, replace the path above with its extraction dir
 
 ```text
 # Explicit path and name
-goto -s C:\Source\BB --name BB
-goto save C:\Source\BB --name BB
+goto -s C:\Source\MyWork --name MyWork
+goto save C:\Source\MyWork --name MyWork
 
 # Current directory and explicit name
 goto -s --name MyWork
@@ -74,14 +74,14 @@ goto -s C:\Source\MyWork
 goto -s
 
 # Navigate, list, and remove
-goto BB
+goto MyWork
 goto -l
 goto list
-goto -r BB
-goto remove BB
+goto -r MyWork
+goto remove MyWork
 ```
 
-Names are compared without ASCII case sensitivity, so `BB` and `bb` identify the same workplace. Names may contain ASCII letters, numbers, dots, hyphens, and underscores, and must start with a letter or number. Use `goto -- list` if a bookmark has the same name as a subcommand.
+Names are compared without ASCII case sensitivity, so `MyWork` and `mywork` identify the same workplace. Names may contain ASCII letters, numbers, dots, hyphens, and underscores, and must start with a letter or number. Use `goto -- list` if a bookmark has the same name as a subcommand.
 
 The target must be an existing directory when saved. If it is later deleted, `goto` reports the stale bookmark rather than silently removing it.
 
