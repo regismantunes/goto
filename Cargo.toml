@@ -1,0 +1,25 @@
+[package]
+name = "goto"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.80"
+description = "A tiny, cross-platform directory bookmark manager"
+license = "MIT"
+keywords = ["cli", "directory", "bookmark", "shell", "productivity"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+anyhow = "1.0"
+atomicwrites = "0.4"
+clap = { version = "4.5", features = ["derive"] }
+fs2 = "0.4"
+path-clean = "1.0"
+serde_json = "1.0"
+
+[dev-dependencies]
+tempfile = "3.20"
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1

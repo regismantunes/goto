@@ -1,0 +1,89 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build ${{ matrix.target }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            target: x86_64-unknown-linux-musl
+            archive: tar
+          - os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: zip
+          - os: macos-latest
+            target: x86_64-apple-darwin
+            archive: tar
+          - os: macos-latest
+            target: aarch64-apple-darwin
+            archive: tar
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+      - name: Install musl tools
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: sudo apt-get update && sudo apt-get install --yes musl-tools
+      - run: cargo build --release --locked --target ${{ matrix.target }}
+      - name: Package Unix binary
+        if: matrix.archive == 'tar'
+        shell: bash
+        run: |
+          mkdir -p package artifacts
+          cp "target/${{ matrix.target }}/release/goto" package/goto
+          cp README.md LICENSE package/
+          tar -czf "artifacts/goto-${{ matrix.target }}.tar.gz" -C package .
+      - name: Package Windows binary and CMD helper
+        if: matrix.archive == 'zip'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path package, artifacts | Out-Null
+          Copy-Item "target/${{ matrix.target }}/release/goto.exe" package/goto.exe
+          Copy-Item shell/goto-shell.cmd package/goto-shell.cmd
+          Copy-Item shell/goto-init.cmd package/goto-init.cmd
+          Copy-Item README.md, LICENSE package/
+          Compress-Archive -Path package/* -DestinationPath "artifacts/goto-${{ matrix.target }}.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.target }}
+          path: artifacts/*
+          if-no-files-found: error
+
+  publish:
+    name: Publish GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: release-*
+          path: release
+          merge-multiple: true
+      - name: Prepare repository-aware installers and checksums
+        shell: bash
+        run: |
+          sed "s|@GOTO_REPOSITORY@|${GITHUB_REPOSITORY}|g" scripts/install.sh > release/install.sh
+          sed "s|@GOTO_REPOSITORY@|${GITHUB_REPOSITORY}|g" scripts/install.ps1 > release/install.ps1
+          cd release
+          sha256sum goto-* > checksums.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release/*
+          fail_on_unmatched_files: true

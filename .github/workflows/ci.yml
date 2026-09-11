@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo fmt -- --check
+      - run: cargo clippy --all-targets -- -D warnings
+      - run: cargo test --locked
+
+  shell-integration:
+    name: Shell integration
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo build --locked
+      - name: Install Bash, Zsh, and Fish test shells
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install --yes zsh fish
+      - name: Test Bash, Zsh, and Fish
+        if: runner.os == 'Linux'
+        run: sh scripts/test-unix-shells.sh
+      - name: Test PowerShell and CMD
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./scripts/test-windows-shells.ps1
+
