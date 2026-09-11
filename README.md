@@ -91,7 +91,7 @@ Bookmarks are stored as a plain JSON object:
 
 ```json
 {
-  "BB": "C:\\Source\\BB"
+  "MyWork": "C:\\Source\\MyWork"
 }
 ```
 
