@@ -1,5 +1,10 @@
 # goto
 
+[![CI](https://github.com/regismantunes/goto/actions/workflows/ci.yml/badge.svg)](https://github.com/regismantunes/goto/actions/workflows/ci.yml)
+[![GitHub Release](https://img.shields.io/github/v/release/regismantunes/goto)](https://github.com/regismantunes/goto/releases/latest)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/Rust-1.80%2B-orange?logo=rust)](https://www.rust-lang.org/)
+
 `goto` is a small, cross-platform directory bookmark manager. Save a workplace once, then jump to it by name from PowerShell, CMD, Bash, Zsh, or Fish.
 
 ```text
