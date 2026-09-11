@@ -7,6 +7,12 @@ description = "A tiny, cross-platform directory bookmark manager"
 license = "MIT"
 keywords = ["cli", "directory", "bookmark", "shell", "productivity"]
 categories = ["command-line-utilities"]
+[lib]
+name = "goto"
+
+[[bin]]
+name = "goto"
+path = "src/main.rs"
 
 [dependencies]
 anyhow = "1.0"
