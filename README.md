@@ -21,6 +21,22 @@ An executable cannot change its parent shell's working directory. `goto init` pr
 
 Download the archive for your platform from the [latest release](../../releases/latest), extract it, and put `goto` on `PATH`. Release assets also contain `install.sh` and `install.ps1`; these verify the downloaded archive using the published SHA-256 checksums and install it for the current user.
 
+To run the release installer directly, without manually downloading the script first:
+
+PowerShell:
+
+```powershell
+irm https://github.com/regismantunes/goto/releases/latest/download/install.ps1 | iex
+```
+
+macOS/Linux:
+
+```sh
+curl -fsSL https://github.com/regismantunes/goto/releases/latest/download/install.sh | sh
+```
+
+Both commands retrieve the installer and the platform archive in the background. To install a specific release, download the script from `releases/download/vX.Y.Z/` and set `GOTO_VERSION` to that version before running it.
+
 To build from source:
 
 ```text
