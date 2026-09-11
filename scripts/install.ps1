@@ -54,9 +54,26 @@ try {
         $env:PATH = "$InstallDir;$env:PATH"
     }
 
+    $gotoExecutable = [System.IO.Path]::GetFullPath((Join-Path $InstallDir 'goto.exe'))
+    $escapedExecutable = $gotoExecutable.Replace("'", "''")
+    $profileLine = "Invoke-Expression (& '$escapedExecutable' init powershell | Out-String)"
+    $legacyProfileLine = 'Invoke-Expression (& goto.exe init powershell | Out-String)'
+    $profileDirectory = Split-Path -Parent $PROFILE
+    if ($profileDirectory) {
+        New-Item -ItemType Directory -Path $profileDirectory -Force | Out-Null
+    }
+    if (-not (Test-Path -LiteralPath $PROFILE)) {
+        New-Item -ItemType File -Path $PROFILE -Force | Out-Null
+    }
+
+    $profileLines = @(Get-Content -LiteralPath $PROFILE)
+    if (($profileLines -notcontains $profileLine) -and ($profileLines -notcontains $legacyProfileLine)) {
+        Add-Content -LiteralPath $PROFILE -Value $profileLine
+    }
+
     Write-Host "Installed goto in $InstallDir."
-    Write-Host 'Activate it in PowerShell with:'
-    Write-Host '  Invoke-Expression (& goto.exe init powershell | Out-String)'
+    Write-Host "Enabled goto in PowerShell through $PROFILE."
+    Write-Host 'Open a new PowerShell session to use goto directory shortcuts.'
     Write-Host 'Activate it in CMD with:'
     Write-Host "  call `"$InstallDir\goto-init.cmd`""
 }

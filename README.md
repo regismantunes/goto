@@ -31,7 +31,9 @@ When using CMD with a source installation, also copy `shell\goto-shell.cmd` and 
 
 ### Activate your shell
 
-Run the matching command now and add the same line to your shell profile for future sessions.
+The Windows installer enables PowerShell integration automatically for future sessions. If
+you install from source or manually extract the archive, run the matching command now and
+add the same line to your shell profile for future sessions.
 
 PowerShell:
 
